@@ -13,7 +13,7 @@ dependencies:
       url: git://github.com/l7ssha/nyxx.git
       ref: backend_rework
   http: any
-  dson: any
+  json_serializable: ^1.2.1
 
 
 dev_dependencies:
