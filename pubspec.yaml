@@ -1,0 +1,21 @@
+name: DCGB
+description: A bot that manages a community's games.
+version: 1.0.0
+# homepage: https://www.example.com
+author: Outpox
+
+environment:
+  sdk: '>=2.0.0 <3.0.0'
+
+dependencies:
+  nyxx:
+    git:
+      url: git://github.com/l7ssha/nyxx.git
+      ref: backend_rework
+  http: any
+  dson: any
+
+
+dev_dependencies:
+  test: ^1.0.0
+  build_runner: any
