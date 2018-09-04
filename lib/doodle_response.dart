@@ -1,11 +1,11 @@
 library example.json_to_object;
 
-import 'package:dson/dson.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'doodle_response.g.dart';
 
-@serializable
-class DoodleResponse extends _$DoodleResponseSerializable {
+@JsonSerializable()
+class DoodleResponse {
   /// The Doodle poll ID
   String id;
 
@@ -13,7 +13,7 @@ class DoodleResponse extends _$DoodleResponseSerializable {
   int initiated;
   int latestChange;
 
-  /// The participants count
+  /// The participants count. Same as parcipants.length
   int participantsCount;
 
   String title;
@@ -25,16 +25,26 @@ class DoodleResponse extends _$DoodleResponseSerializable {
   List<Participant> participants;
 
   DoodleResponse();
+
+  factory DoodleResponse.fromJson(Map<String, dynamic> json) => _$DoodleResponseFromJson(json);
 }
 
-@serializable
-class Option extends _$OptionSerializable {
+@JsonSerializable()
+class Option {
   String text;
+
+  Option();
+
+  factory Option.fromJson(Map<String, dynamic> json) => _$OptionFromJson(json);
 }
 
-@serializable
-class Participant extends _$ParticipantSerializable {
+@JsonSerializable()
+class Participant {
   int id;
   String name;
   List<int> preferences;
+
+  Participant();
+
+  factory Participant.fromJson(Map<String, dynamic> json) => _$ParticipantFromJson(json);
 }

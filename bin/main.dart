@@ -1,18 +1,33 @@
-import 'dart:async';
 import 'package:nyxx/nyxx.dart' as discord;
 import 'package:DCGB/doodle_parser.dart';
 
 main(List<String> arguments) async {
-  // print(await sumStream(streamGenerator(20)));
-  // discord.Client bot = new discord.Client("NDgyNDg0ODU4NDEzNjQ1ODM3.Dm_Epw._HhSCNLIEfa9gzKmV5oSviP4jC8");
-  // bot.onReady.listen((discord.ReadyEvent e) {
-  //   print('Ready!');
-  // });
+  DoodleParser dp = DoodleParser("c6a4bi6inz4dmypa");
+  await dp.loadData();
+  // print(dp.getGamesForUser('outpox'));
+  // print(dp.getUsersForGame('Escape from Tarkov'));
 
-  // bot.onMessage.listen((discord.MessageEvent e) {
-  //   if (e.message.content == "!ping") {
-  //     e.message.channel.send(content: 'Pong!');
-  //   }
-  // });
-  getHtml();
+  discord.Client bot = new discord.Client("NDgyNDg0ODU4NDEzNjQ1ODM3.Dm_Epw._HhSCNLIEfa9gzKmV5oSviP4jC8");
+  bot.onReady.listen((discord.ReadyEvent e) {
+    print('Ready!');
+  });
+
+  bot.onMessage.listen((discord.MessageEvent e) {
+    if (e.message.content.startsWith("!game")) {
+      var game = e.message.content.replaceAll("!game", "").trim();
+      if (game == "") {
+        e.message.channel.send(content: 'Merci de préciser un jeu');
+      } else {
+        e.message.channel.send(content: dp.getUsersForGame(game));
+      }
+    }
+    if (e.message.content.startsWith("!player")) {
+      var player = e.message.content.replaceAll("!player", "").trim();
+      if (player == "") {
+        e.message.channel.send(content: 'Merci de préciser un joueur');
+      } else {
+        e.message.channel.send(content: dp.getGamesForUser(player));
+      }
+    }
+  });
 }
