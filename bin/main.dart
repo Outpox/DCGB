@@ -1,13 +1,15 @@
 import 'package:nyxx/nyxx.dart' as discord;
 import 'package:DCGB/doodle_parser.dart';
+import 'package:dotenv/dotenv.dart';
 
 main(List<String> arguments) async {
+  // Load dotenv
+  load();
+
   DoodleParser dp = DoodleParser("c6a4bi6inz4dmypa");
   await dp.loadData();
-  // print(dp.getGamesForUser('outpox'));
-  // print(dp.getUsersForGame('Escape from Tarkov'));
 
-  discord.Client bot = new discord.Client("NDgyNDg0ODU4NDEzNjQ1ODM3.Dm_Epw._HhSCNLIEfa9gzKmV5oSviP4jC8");
+  discord.Client bot = new discord.Client(env["DISCORD_KEY"]);
   bot.onReady.listen((discord.ReadyEvent e) {
     print('Ready!');
   });
