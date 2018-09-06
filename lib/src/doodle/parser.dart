@@ -1,9 +1,9 @@
 import 'package:http/http.dart' as http;
-import 'doodle_response.dart';
+import 'response.dart';
 import 'dart:convert';
 import 'dart:async';
-import 'levenshtein.dart';
-import 'guess.dart';
+import 'package:edit_distance/edit_distance.dart';
+import 'package:DCGB/guess.dart';
 
 var baseUrl = 'https://doodle.com/api/v2.0/polls/';
 

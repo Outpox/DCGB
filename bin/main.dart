@@ -1,5 +1,5 @@
 import 'package:nyxx/nyxx.dart' as discord;
-import 'package:DCGB/doodle_parser.dart';
+import 'package:DCGB/src/doodle/parser.dart';
 import 'package:dotenv/dotenv.dart';
 
 main(List<String> arguments) async {
