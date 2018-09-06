@@ -9,7 +9,7 @@ main(List<String> arguments) async {
   DoodleParser dp = DoodleParser("c6a4bi6inz4dmypa");
   await dp.loadData();
 
-  discord.Client bot = new discord.Client(env["DISCORD_KEY"]);
+  discord.Nyxx bot = new discord.Nyxx(env["DISCORD_KEY"]);
   bot.onReady.listen((discord.ReadyEvent e) {
     print('Ready!');
   });
