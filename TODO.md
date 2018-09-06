@@ -1,6 +1,7 @@
 * [x] Utiliser la librairie `edit_distance` au lieu d'un copier-coller
-* [] Refonte de la structure du projet
+* [x] Refonte de la structure du projet
 * [] Refonte des commandes
+* [] Association utilisateur Doodle -> utilisateur Discord
 * Ajout des commandes :
   * [] Aide
   * [] Mise à jour des infos du doodle (sans passer par un reboot du bot)
