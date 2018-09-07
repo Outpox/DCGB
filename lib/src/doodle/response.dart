@@ -2,7 +2,7 @@ library example.json_to_object;
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'doodle_response.g.dart';
+part 'response.g.dart';
 
 @JsonSerializable()
 class DoodleResponse {
