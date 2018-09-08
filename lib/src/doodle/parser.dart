@@ -4,6 +4,9 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:edit_distance/edit_distance.dart';
 import 'package:DCGB/guess.dart';
+import '../UsersForGame.dart';
+import '../DiscordUserFromDoodle.dart';
+import 'package:nyxx/nyxx.dart';
 
 var baseUrl = 'https://doodle.com/api/v2.0/polls/';
 
@@ -65,7 +68,7 @@ Il est prêt à prendre les jeux suivants pour jouer en multi : ${mayPlayGamesLi
     """;
   }
 
-  String getUsersForGame(String game) {
+  UsersForGame getUsersForGame(String game) {
     List<Guess> candidates = [];
 
     for (var i = 0; i < this.parsedResponse.options.length; i++) {
@@ -77,7 +80,7 @@ Il est prêt à prendre les jeux suivants pour jouer en multi : ${mayPlayGamesLi
       }
     }
 
-    if (candidates.length == 0) return 'Aucun résultat';
+    if (candidates.length == 0) return UsersForGame.empty(game);
 
     candidates.sort((g1, g2) => g1.confidence.compareTo(g2.confidence));
 
@@ -96,9 +99,23 @@ Il est prêt à prendre les jeux suivants pour jouer en multi : ${mayPlayGamesLi
       }
     }
 
-    return """
-Les joueurs suivants (${playersList.length}) ont ${this.parsedResponse.options[gameIndex].text} : ${playersList.join(", ")}.
-Les joueurs suivants (${mightPlayList.length}) sont prêt à acheter le jeu : ${mightPlayList.join(", ")}.
-    """;
+    return UsersForGame(game, playersList, mightPlayList);
+  }
+
+  void messageUsersOfGame(Map<Snowflake, Member> members, User author, String game, String message) {
+    // 1. commande gb_mp escape from takov, bonsoir! On joue à EFT si ça te tente
+    // 2. récupération de la liste des utilisateurs discord
+    // 3. rechercher les pseudos similaires entre le doodle et discord
+    // 4. envoyer le message à chaque joueur
+    
+    UsersForGame ufg = getUsersForGame(game);
+
+    List<DiscordUserFromDoodle> guesses = List();
+
+    ufg.players.forEach((player) {
+      guesses.add(DiscordUserFromDoodle(player, members));
+    });
+
+    guesses.map((g) => print(g.bestGuess()));
   }
 }
