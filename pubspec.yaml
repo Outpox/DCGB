@@ -17,9 +17,8 @@ dependencies:
   json_serializable: ^1.2.1
   edit_distance:
     git:
-      url: git@github.com:Outpox/edit_distance.git
+      url: git://github.com/Outpox/edit_distance.git
       ref: feature/dart2.0.0-update
-
 
 dev_dependencies:
   test: ^1.0.0
