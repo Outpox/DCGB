@@ -12,7 +12,7 @@ main(List<String> arguments) async {
   // Load dotenv
   load();
 
-  DoodleParser dp = DoodleParser("c6a4bi6inz4dmypa");
+  DoodleParser dp = DoodleParser(env["DOODLE_ID"]);
   await dp.loadData();
   gdp = dp;
   discord.Nyxx bot = new discord.Nyxx(env["DISCORD_KEY"]);
