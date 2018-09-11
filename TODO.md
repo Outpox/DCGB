@@ -7,7 +7,8 @@
 * Ajout des commandes :
   * [] Aide
   * [x] Mise à jour des infos du doodle (sans passer par un reboot du bot)
-  * [] MP aux joueurs d'un jeu
+  * [x] MP aux joueurs d'un jeu
+  * [] Indiquer si un joueur n'a pas répondu pour des jeux
   * [] Changer l'id du Doodle
   * [] Gestion des présences / sondage
 * [] Amélioration des réponses renvoyées par le bot
