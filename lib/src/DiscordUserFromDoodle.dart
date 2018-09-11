@@ -1,36 +1,41 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:edit_distance/edit_distance.dart';
-import 'dart:math';
+
+import 'UsersForGame.dart';
 
 class DiscordUserFromDoodle {
-  String doodleName;
-  Map<Snowflake, Member> discordMembers;
-  List<DiscordGuess> guesses;
+  UsersForGame doodleUsers;
+  Member discordMember;
+  List<DiscordGuess> guesses = [];
 
-  DiscordUserFromDoodle(String doodleName, Map<Snowflake, Member> discordMembers) {
-    this.doodleName = doodleName;
-    this.discordMembers = discordMembers;
-    // this.discordMembers.forEach((id, member) => this.guesses.add(DiscordGuess(id, doodleName, member.user.username)));
-    this.discordMembers.forEach((id, member) => print(member));
+  DiscordUserFromDoodle(Member discordMember, UsersForGame doodleUsers) {
+    this.doodleUsers = doodleUsers;
+    this.discordMember = discordMember;
+    this.doodleUsers.players.forEach((doodleName) => this.guesses.add(DiscordGuess(discordMember, doodleName)));
+    // this.discordMembers.forEach((id, member) => print(member));
   }
 
   DiscordGuess bestGuess() {
-    return this.guesses.reduce((acc, val) => min(acc.confidence, val.confidence));
+    this.guesses.sort((d1, d2) => d1.confidence.compareTo(d2.confidence));
+    return this.guesses.first;
   }
 }
 
 class DiscordGuess {
-  Snowflake id;
-  String doodleName;
+  Member discordUser;
   String discordName;
+  String doodleName;
   double confidence;
 
-  DiscordGuess(Snowflake id, String doodleName, String discordName) {
-    this.id = id;
+  DiscordGuess(Member discordUser, String doodleName) {
+    this.discordUser = discordUser;
     this.doodleName = doodleName;
-    this.discordName = discordName;
-    print(doodleName);
-    print(discordName);
+    this.discordName = discordUser.nickname != null ? discordUser.nickname : discordUser.user.username;
     this.confidence = Levenshtein().normalizedDistance(doodleName, discordName);
+  }
+
+  @override
+  String toString() {
+    return "${this.doodleName} = ${this.discordName} (${this.confidence.toStringAsFixed(2)})";
   }
 }

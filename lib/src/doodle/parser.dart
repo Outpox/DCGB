@@ -102,20 +102,36 @@ Il est prêt à prendre les jeux suivants pour jouer en multi : ${mayPlayGamesLi
     return UsersForGame(game, playersList, mightPlayList);
   }
 
-  void messageUsersOfGame(Map<Snowflake, Member> members, User author, String game, String message) {
-    // 1. commande gb_mp escape from takov, bonsoir! On joue à EFT si ça te tente
-    // 2. récupération de la liste des utilisateurs discord
-    // 3. rechercher les pseudos similaires entre le doodle et discord
-    // 4. envoyer le message à chaque joueur
-    
+  String messageUsersOfGame(Map<Snowflake, Member> members, User author, String game, String message) {
+    game = game.trim();
+    message = message.trim();
+
     UsersForGame ufg = getUsersForGame(game);
 
     List<DiscordUserFromDoodle> guesses = List();
+    List<DiscordGuess> finalGuesses = List();
 
-    ufg.players.forEach((player) {
-      guesses.add(DiscordUserFromDoodle(player, members));
+    members.forEach((k, member) => guesses.add(DiscordUserFromDoodle(member, ufg)));
+    guesses.forEach((f) => finalGuesses.add(f.bestGuess()));
+
+    List<String> foundPlayers = List();
+    List<String> notFoundPlayers = List();
+
+    finalGuesses.forEach((f) {
+      if (f.confidence < 0.3) {
+        f.discordUser.send(content: """
+**[Message envoyé par ${author.mentionNickname} concernant le jeu ${game}]**
+$message
+""");
+        foundPlayers.add(f.discordName);
+      } else {
+        notFoundPlayers.add(f.doodleName);
+      }
     });
 
-    guesses.map((g) => print(g.bestGuess()));
+    return """
+Les joueurs suivants (${foundPlayers.length}) ont reçu un message : ${foundPlayers.join(', ')}.
+Impossible de trouver une correspondance pour les joueurs suivants (${notFoundPlayers.length}) : ${notFoundPlayers.join(', ')}.
+""";
   }
 }

@@ -34,7 +34,6 @@ class PlayerCommand extends command.CommandContext {
     }
     await reply(content: gdp.getGamesForUser(argument));
   }
-
 }
 
 @command.Module("game")
@@ -61,13 +60,14 @@ class UpdateCommand extends command.CommandContext {
   }
 }
 
-// @command.Module("mp")
-// class MPCommand extends command.CommandContext {
-//   @command.Command(main: true)
-//   @command.Help("mp", usage: "!gb_mp game, message")
-//   Future run(@command.Remainder() String arguments) async {
-//     var splitedArguments = arguments.split(",");
-//     if (splitedArguments.length != 2) return await reply(content: "Format attendu (la virgule est importante) : !gb_mp nomDuJeu, message");
-//     gdp.messageUsersOfGame(this.guild.members, this.author, splitedArguments[0], splitedArguments[1]);
-//   }
-// }
+@command.Module("mp")
+class MpCommand extends command.CommandContext {
+  @command.Command(main: true)
+  @command.Help("mp", usage: "!gb_mp game, message")
+  Future run(@command.Remainder() String arguments) async {
+    var splitedArguments = arguments.split("|");
+    if (splitedArguments.length != 2) return await reply(content: "Format attendu (| = alt gr + 6) : !gb_mp nomDuJeu | message");
+    String response = gdp.messageUsersOfGame(this.guild.members, this.author, splitedArguments[0], splitedArguments[1]);
+    await reply(content: response);
+  }
+}
