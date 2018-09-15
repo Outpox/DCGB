@@ -135,18 +135,9 @@ Il est prêt à prendre les jeux suivants pour jouer en multi : ${mayPlayGamesLi
       }
     });
 
-    String resp = """
+    return """
 ${foundPlayers.map((f) => f.discordUser.user.mention).join(' ')}
 $message
 """;
-
-    if (notFoundPlayers.length > 0) {
-      resp += """
-
-Impossible de trouver une correspondance pour les joueurs suivants : ${notFoundPlayers.map((f) => f.doodleName).join(', ')}
-""";
-    }
-
-    return resp;
   }
 }
