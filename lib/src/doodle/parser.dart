@@ -29,15 +29,17 @@ class DoodleParser {
 
     for (var i = 0; i < this.parsedResponse.participantsCount; i++) {
       var user = this.parsedResponse.participants[i];
-      var calculatedConfidence = Levenshtein().normalizedDistance(user.name.toLowerCase(), username.toLowerCase());
+      var calculatedConfidence = Levenshtein()
+          .normalizedDistance(user.name.toLowerCase(), username.toLowerCase());
 
       if (calculatedConfidence < 0.5) {
-        candidates.add(Guess(index: i, text: user.name, confidence: calculatedConfidence));
+        candidates.add(
+            Guess(index: i, text: user.name, confidence: calculatedConfidence));
       }
     }
 
     if (candidates.length == 0) return 'Aucun résultat';
-    
+
     candidates.sort((u1, u2) => u1.confidence.compareTo(u2.confidence));
 
     List<String> playingGamesList = [];
@@ -53,7 +55,7 @@ class DoodleParser {
         case 2:
           playingGamesList.add(game);
           break;
-        case 1: 
+        case 1:
           mayPlayGamesList.add(game);
           break;
         case 0:
@@ -73,10 +75,12 @@ Il est prêt à prendre les jeux suivants pour jouer en multi : ${mayPlayGamesLi
 
     for (var i = 0; i < this.parsedResponse.options.length; i++) {
       var lgame = this.parsedResponse.options[i];
-      var calculatedConfidence = Levenshtein().normalizedDistance(game.toLowerCase(), lgame.text.toLowerCase());
+      var calculatedConfidence = Levenshtein()
+          .normalizedDistance(game.toLowerCase(), lgame.text.toLowerCase());
 
       if (calculatedConfidence < 0.5) {
-        candidates.add(Guess(index: i, text: lgame.text, confidence: calculatedConfidence));
+        candidates.add(Guess(
+            index: i, text: lgame.text, confidence: calculatedConfidence));
       }
     }
 
@@ -90,10 +94,10 @@ Il est prêt à prendre les jeux suivants pour jouer en multi : ${mayPlayGamesLi
 
     for (var user in this.parsedResponse.participants) {
       switch (user.preferences[gameIndex]) {
-        case 2: 
+        case 2:
           playersList.add(user.name);
           break;
-        case 1: 
+        case 1:
           mightPlayList.add(user.name);
           break;
       }
@@ -102,7 +106,8 @@ Il est prêt à prendre les jeux suivants pour jouer en multi : ${mayPlayGamesLi
     return UsersForGame(game, playersList, mightPlayList);
   }
 
-  String messageUsersOfGame(Map<Snowflake, Member> members, User author, String game, String message) {
+  String messageUsersOfGame(Map<Snowflake, Member> members, User author,
+      String game, String message) {
     game = game.trim();
     message = message.trim();
 
@@ -111,27 +116,37 @@ Il est prêt à prendre les jeux suivants pour jouer en multi : ${mayPlayGamesLi
     List<DiscordUserFromDoodle> guesses = List();
     List<DiscordGuess> finalGuesses = List();
 
-    members.forEach((k, member) => guesses.add(DiscordUserFromDoodle(member, ufg)));
+    members.forEach(
+        (k, member) => guesses.add(DiscordUserFromDoodle(member, ufg)));
     guesses.forEach((f) => finalGuesses.add(f.bestGuess()));
 
-    List<String> foundPlayers = List();
-    List<String> notFoundPlayers = List();
+    List<DiscordGuess> foundPlayers = List();
+    List<DiscordGuess> notFoundPlayers = List();
 
     finalGuesses.forEach((f) {
       if (f.confidence < 0.3) {
-        f.discordUser.send(content: """
-**[Message envoyé par ${author.mentionNickname} concernant le jeu ${game}]**
-$message
-""");
-        foundPlayers.add(f.discordName);
+//         f.discordUser.send(content: """
+// **[Message envoyé par ${author.mentionNickname} concernant le jeu ${game}]**
+// $message
+// """);
+        foundPlayers.add(f);
       } else {
-        notFoundPlayers.add(f.doodleName);
+        notFoundPlayers.add(f);
       }
     });
 
-    return """
-Les joueurs suivants (${foundPlayers.length}) ont reçu un message : ${foundPlayers.join(', ')}.
-Impossible de trouver une correspondance pour les joueurs suivants (${notFoundPlayers.length}) : ${notFoundPlayers.join(', ')}.
+    String resp = """
+${foundPlayers.map((f) => f.discordUser.user.mention).join(' ')}
+$message
 """;
+
+    if (notFoundPlayers.length > 0) {
+      resp += """
+
+Impossible de trouver une correspondance pour les joueurs suivants : ${notFoundPlayers.map((f) => f.doodleName).join(', ')}
+""";
+    }
+
+    return resp;
   }
 }
