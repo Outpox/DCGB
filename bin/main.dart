@@ -6,6 +6,7 @@ import 'package:DCGB/src/UsersForGame.dart';
 import 'package:dotenv/dotenv.dart';
 import 'dart:async';
 
+const String DOODLE_URL = "https://doodle.com/poll/";
 DoodleParser gdp;
 
 main(List<String> arguments) async {
@@ -69,5 +70,14 @@ class MpCommand extends command.CommandContext {
     if (splitedArguments.length != 2) return await reply(content: "Format attendu (| = alt gr + 6) : !gb_mp nomDuJeu | message");
     String response = gdp.messageUsersOfGame(this.guild.members, this.author, splitedArguments[0], splitedArguments[1]);
     await reply(content: response);
+  }
+}
+
+@command.Module("doodle")
+class DoodleCommand extends command.CommandContext {
+  @command.Command(main: true)
+  @command.Help("doodle", usage: "!gb_doodle")
+  Future run(@command.Remainder() String arguments) async {
+    await reply(content: "Le doodle est accessible à l'adresse suivante : ${DOODLE_URL + env["DOODLE_ID"]}");
   }
 }
