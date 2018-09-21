@@ -8,7 +8,7 @@ import '../UsersForGame.dart';
 import '../DiscordUserFromDoodle.dart';
 import 'package:nyxx/nyxx.dart';
 
-var baseUrl = 'https://doodle.com/api/v2.0/polls/';
+const String API_URL = 'https://doodle.com/api/v2.0/polls/';
 
 class DoodleParser {
   String pollId;
@@ -19,7 +19,7 @@ class DoodleParser {
   }
 
   Future<void> loadData() async {
-    await http.get(baseUrl + this.pollId).then((response) {
+    await http.get(API_URL + this.pollId).then((response) {
       this.parsedResponse = DoodleResponse.fromJson(json.decode(response.body));
     });
   }
