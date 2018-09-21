@@ -1,10 +1,9 @@
+import 'dart:async';
+import 'package:dotenv/dotenv.dart';
 import 'package:nyxx/nyxx.dart' as discord;
 import 'package:nyxx/commands.dart' as command;
-
 import 'package:DCGB/src/doodle/parser.dart';
-import 'package:DCGB/src/UsersForGame.dart';
-import 'package:dotenv/dotenv.dart';
-import 'dart:async';
+import 'package:DCGB/src/users_for_game.dart';
 
 const String DOODLE_URL = "https://doodle.com/poll/";
 DoodleParser gdp;

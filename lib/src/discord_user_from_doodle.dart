@@ -1,7 +1,7 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:edit_distance/edit_distance.dart';
 
-import 'UsersForGame.dart';
+import 'users_for_game.dart';
 
 class DiscordUserFromDoodle {
   UsersForGame doodleUsers;

@@ -1,12 +1,12 @@
-import 'package:http/http.dart' as http;
-import 'response.dart';
 import 'dart:convert';
 import 'dart:async';
+import 'package:http/http.dart' as http;
+import 'package:nyxx/nyxx.dart';
 import 'package:edit_distance/edit_distance.dart';
 import 'package:DCGB/guess.dart';
-import '../UsersForGame.dart';
-import '../DiscordUserFromDoodle.dart';
-import 'package:nyxx/nyxx.dart';
+import 'response.dart';
+import '../users_for_game.dart';
+import '../discord_user_from_doodle.dart';
 
 const String API_URL = 'https://doodle.com/api/v2.0/polls/';
 
