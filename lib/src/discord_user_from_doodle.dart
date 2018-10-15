@@ -30,7 +30,7 @@ class DiscordGuess {
   DiscordGuess(Member discordUser, String doodleName) {
     this.discordUser = discordUser;
     this.doodleName = doodleName;
-    this.discordName = discordUser.nickname != null ? discordUser.nickname : discordUser.user.username;
+    this.discordName = discordUser.nickname != null ? discordUser.nickname : discordUser.username;
     this.confidence = Levenshtein().normalizedDistance(doodleName, discordName);
   }
 

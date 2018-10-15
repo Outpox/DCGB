@@ -8,7 +8,7 @@ import 'response.dart';
 import '../users_for_game.dart';
 import '../discord_user_from_doodle.dart';
 
-const String API_URL = 'https://doodle.com/api/v2.0/polls/';
+final String API_URL = 'https://doodle.com/api/v2.0/polls/';
 
 class DoodleParser {
   String pollId;
@@ -106,7 +106,7 @@ Il est prêt à prendre les jeux suivants pour jouer en multi : ${mayPlayGamesLi
     return UsersForGame(game, playersList, mightPlayList);
   }
 
-  String messageUsersOfGame(Map<Snowflake, Member> members, User author,
+  String messageUsersOfGame(Cache<Snowflake, Member> members, User author,
       String game, String message) {
     game = game.trim();
     message = message.trim();
@@ -136,7 +136,7 @@ Il est prêt à prendre les jeux suivants pour jouer en multi : ${mayPlayGamesLi
     });
 
     return """
-${foundPlayers.map((f) => f.discordUser.user.mention).join(' ')}
+${foundPlayers.map((f) => f.discordUser.mention).join(' ')}
 $message
 """;
   }

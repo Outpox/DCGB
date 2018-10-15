@@ -20,7 +20,7 @@ main(List<String> arguments) async {
     print('Ready!');
   });
 
-  command.CommandsFramework('!gb_', bot)
+  command.CommandsFramework('!gb_')
     ..registerLibraryCommands();
 }
 
