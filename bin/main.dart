@@ -24,59 +24,44 @@ main(List<String> arguments) async {
     ..registerLibraryCommands();
 }
 
-@command.Module("player")
-class PlayerCommand extends command.CommandContext {
-  @command.Command(main: true)
-  @command.Help("player", usage: "!gb_player playerName")
-  Future run(@command.Remainder() String argument) async {
-    if (argument == "") {
-      return await reply(content: "Merci de préciser un joueur");
-    }
-    await reply(content: gdp.getGamesForUser(argument));
+@command.Command(name: "player")
+@command.Help("player", usage: "!gb_player playerName")
+Future player(command.CommandContext ctx, @command.Remainder() String argument) async {
+  if (argument == "") {
+    return await ctx.reply(content: "Merci de préciser un joueur");
   }
+  await ctx.reply(content: gdp.getGamesForUser(argument));
 }
 
-@command.Module("game")
-class GameCommand extends command.CommandContext {
-  @command.Command(main: true)
-  @command.Help("game", usage: "!gb_game gameName")
-  Future run(@command.Remainder() String argument) async {
-    if (argument == "") {
-      return await reply(content: "Merci de préciser un jeu");
-    }
-
-    UsersForGame ufg = gdp.getUsersForGame(argument);
-    await reply(content: ufg.toString());
+@command.Command(name: "game")
+@command.Help("game", usage: "!gb_game gameName")
+Future game(command.CommandContext ctx, @command.Remainder() String argument) async {
+  if (argument == "") {
+    return await ctx.reply(content: "Merci de préciser un jeu");
   }
+
+  UsersForGame ufg = gdp.getUsersForGame(argument);
+  await ctx.reply(content: ufg.toString());
 }
 
-@command.Module("update")
-class UpdateCommand extends command.CommandContext {
-  @command.Command(main: true)
-  @command.Help("update", usage: "!gb_update")
-  Future run() async {
-    await gdp.loadData();
-    await reply(content: "Données mises à jour");
-  }
+@command.Command(name: "update")
+@command.Help("update", usage: "!gb_update")
+Future update(command.CommandContext ctx) async {
+  await gdp.loadData();
+  await ctx.reply(content: "Données mises à jour");
 }
 
-@command.Module("mp")
-class MpCommand extends command.CommandContext {
-  @command.Command(main: true)
-  @command.Help("mp", usage: "!gb_mp game, message")
-  Future run(@command.Remainder() String arguments) async {
-    var splitedArguments = arguments.split("|");
-    if (splitedArguments.length != 2) return await reply(content: "Format attendu (| = alt gr + 6) : !gb_mp nomDuJeu | message");
-    String response = gdp.messageUsersOfGame(this.guild.members, this.author, splitedArguments[0], splitedArguments[1]);
-    await reply(content: response);
-  }
+@command.Command(name: "mp")
+@command.Help("mp", usage: "!gb_mp game, message")
+Future mp(command.CommandContext ctx, @command.Remainder() String arguments) async {
+  var splitedArguments = arguments.split("|");
+  if (splitedArguments.length != 2) return await ctx.reply(content: "Format attendu (| = alt gr + 6) : !gb_mp nomDuJeu | message");
+  String response = gdp.messageUsersOfGame(ctx.guild.members, ctx.author, splitedArguments[0], splitedArguments[1]);
+  await ctx.reply(content: response);
 }
 
-@command.Module("doodle")
-class DoodleCommand extends command.CommandContext {
-  @command.Command(main: true)
-  @command.Help("doodle", usage: "!gb_doodle")
-  Future run(@command.Remainder() String arguments) async {
-    await reply(content: "Le doodle est accessible à l'adresse suivante : ${DOODLE_URL + env["DOODLE_ID"]}");
-  }
+@command.Command(name: "doodle")
+@command.Help("doodle", usage: "!gb_doodle")
+Future run(command.CommandContext ctx, @command.Remainder() String arguments) async {
+  await ctx.reply(content: "Le doodle est accessible à l'adresse suivante : ${DOODLE_URL + env["DOODLE_ID"]}");
 }
